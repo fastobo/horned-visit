@@ -1,0 +1,16 @@
+[package]
+name = "horned-visit"
+version = "0.1.0"
+authors = ["Martin Larralde <martin.larralde@embl.de>"]
+edition = "2021"
+license = "MIT"
+description = "Visitor traits for horned-owl with overloadable implementations"
+repository = "https://github.com/fastobo/horned-visit"
+readme = "README.md"
+keywords = ["owl", "visitor", "owl2", "ontology"]
+categories = ["science"]
+
+[dependencies]
+horned-owl = "0.11.0"
+blanket = "0.2.0"
+paste = "1.0.6"
