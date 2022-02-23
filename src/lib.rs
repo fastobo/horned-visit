@@ -12,6 +12,7 @@ use horned_owl::model::*;
 macro_rules! impl_traits {
     ($visit:ident, $($name:ident($type:ty),)*) => {
         paste! {
+            /// A trait for visiting the elements of an ontology immutably.
             #[blanket(default = "visit", derive(Mut, Box))]
             pub trait $visit<'ast> {
                 /// Visit the annotations of an [`AnnotatedAxiom`].
@@ -23,6 +24,7 @@ macro_rules! impl_traits {
             }
 
             #[blanket(default = "visit_mut", derive(Mut, Box))]
+            /// A trait for visiting the elements of an ontology mutably.
             pub trait [<$visit Mut>] {
                 /// Visit the annotations of an [`AnnotatedAxiom`].
                 fn visit_annotations(&mut self, annotations: &mut BTreeSet<Annotation>);
@@ -120,6 +122,7 @@ macro_rules! impl_default {
                 }
 
                 $(#[allow(unused_variables)]
+                #[doc = "Default implementation of the [`Visit::visit_" $name "`] method"]
                 pub fn [<visit_ $name>] <'ast, V: Visit<'ast> + ?Sized>($visitor: &mut V, $name: &'ast $type) {
                     $code
                 })*
@@ -138,6 +141,7 @@ macro_rules! impl_default {
                 }
 
                 $(#[allow(unused_variables)]
+                #[doc = "Default implementation of the [`VisitMut::visit_" $name "`] method"]
                 pub fn [<visit_ $name>] <V: VisitMut + ?Sized>($visitor: &mut V, $name: &mut $type) {
                     $code
                 })*
