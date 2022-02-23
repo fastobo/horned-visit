@@ -14,14 +14,20 @@ macro_rules! impl_traits {
         paste! {
             #[blanket(default = "visit", derive(Mut, Box))]
             pub trait $visit<'ast> {
+                /// Visit the annotations of an [`AnnotatedAxiom`].
+                fn visit_annotations(&mut self, annotations: &'ast BTreeSet<Annotation>);
                 $(
+                    #[doc = "Visit a [`" $type "`]."]
                     fn [<visit_ $name>] (&mut self, $name: &'ast $type);
                 )*
             }
 
             #[blanket(default = "visit_mut", derive(Mut, Box))]
             pub trait [<$visit Mut>] {
+                /// Visit the annotations of an [`AnnotatedAxiom`].
+                fn visit_annotations(&mut self, annotations: &mut BTreeSet<Annotation>);
                 $(
+                    #[doc = "Visit a [`" $type "`]."]
                     fn [<visit_ $name>] (&mut self, $name: &mut $type);
                 )*
             }
@@ -32,7 +38,6 @@ macro_rules! impl_traits {
 impl_traits! { Visit,
     annotated_axiom(AnnotatedAxiom),
     annotation(Annotation),
-    annotations(BTreeSet<Annotation>),
     annotation_assertion(AnnotationAssertion),
     annotation_property(AnnotationProperty),
     annotation_property_domain(AnnotationPropertyDomain),
