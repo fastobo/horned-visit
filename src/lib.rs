@@ -6,6 +6,7 @@ extern crate paste;
 extern crate blanket;
 extern crate horned_owl;
 
+use std::collections::BTreeSet;
 use horned_owl::model::*;
 
 macro_rules! impl_traits {
@@ -31,6 +32,7 @@ macro_rules! impl_traits {
 impl_traits! { Visit,
     annotated_axiom(AnnotatedAxiom),
     annotation(Annotation),
+    annotations(BTreeSet<Annotation>),
     annotation_assertion(AnnotationAssertion),
     annotation_property(AnnotationProperty),
     annotation_property_domain(AnnotationPropertyDomain),
@@ -100,36 +102,40 @@ impl_traits! { Visit,
 macro_rules! impl_default {
     ( $visitor:ident, $($name:ident($type:ty) => $code:expr,)* ) => {
         paste! {
+            /// Default implementations of the `Visit` methods.
             pub mod visit {
 
                 use super::*;
 
-                macro_rules! r {
-                    ($x:expr) => (&$x);
+                macro_rules! r { ($x:expr) => (&$x); }
+
+                #[allow(unused_variables)]
+                pub fn visit_annotations<'ast, V: Visit<'ast> + ?Sized>(visitor: &mut V, annotations: &'ast BTreeSet<Annotation>) {
+                    annotations.iter().for_each(|a| visitor.visit_annotation(a));
                 }
 
-                $(
-                    #[allow(unused_variables)]
-                    pub fn [<visit_ $name>] <'ast, V: Visit<'ast> + ?Sized>($visitor: &mut V, $name: &'ast $type) {
-                        $code
-                    }
-                )*
+                $(#[allow(unused_variables)]
+                pub fn [<visit_ $name>] <'ast, V: Visit<'ast> + ?Sized>($visitor: &mut V, $name: &'ast $type) {
+                    $code
+                })*
             }
 
+            /// Default implementations of the `VisitMut` methods.
             pub mod visit_mut {
 
                 use super::*;
 
-                macro_rules! r {
-                    ($x:expr) => (&mut $x);
+                macro_rules! r { ($x:expr) => (&mut $x); }
+
+                #[allow(unused_variables)]
+                pub fn visit_annotations<V: VisitMut + ?Sized>($visitor: &mut V, annotations: &mut BTreeSet<Annotation>) {
+                    // cannot mutably visit the elements of a BTreeSet
                 }
 
-                $(
-                    #[allow(unused_variables)]
-                    pub fn [<visit_ $name>] <V: VisitMut + ?Sized>($visitor: &mut V, $name: &mut $type) {
-                        $code
-                    }
-                )*
+                $(#[allow(unused_variables)]
+                pub fn [<visit_ $name>] <V: VisitMut + ?Sized>($visitor: &mut V, $name: &mut $type) {
+                    $code
+                })*
             }
         }
     }
@@ -138,9 +144,7 @@ macro_rules! impl_default {
 impl_default! { visitor,
 
     annotated_axiom(AnnotatedAxiom) => {
-        // for a in r!(annotated_axiom.ann) {
-        //     visitor.visit_annotation(r!(a))
-        // }
+        visitor.visit_annotations(r!(annotated_axiom.ann));
         visitor.visit_axiom(r!(annotated_axiom.axiom));
     },
 
