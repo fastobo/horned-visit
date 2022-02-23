@@ -99,8 +99,6 @@ in the [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) format.
 This library is provided under the open-source
 [MIT license](https://choosealicense.com/licenses/mit/).
 
-## 📰 Citation
-
 *This project was developed by [Martin Larralde](https://github.com/althonos/)
 during his PhD project at the [European Molecular Biology Laboratory](https://www.embl.de/)
 in the [Zeller team](https://github.com/zellerlab).*
