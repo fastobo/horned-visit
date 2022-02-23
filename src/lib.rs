@@ -7,8 +7,8 @@ extern crate paste;
 extern crate blanket;
 extern crate horned_owl;
 
-use std::collections::BTreeSet;
 use horned_owl::model::*;
+use std::collections::BTreeSet;
 
 macro_rules! impl_traits {
     ($visit:ident, $($name:ident($type:ty),)*) => {
