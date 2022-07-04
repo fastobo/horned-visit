@@ -11,6 +11,6 @@ keywords = ["owl", "visitor", "owl2", "ontology"]
 categories = ["science"]
 
 [dependencies]
-horned-owl = "0.11.0"
+horned-owl = "0.12.0"
 blanket = "0.2.0"
 paste = "1.0.6"
