@@ -14,7 +14,8 @@ macro_rules! impl_traits {
     ($visit:ident, $($name:ident($type:ty),)*) => {
         paste! {
             /// A trait for visiting the elements of an ontology immutably.
-            #[blanket(default = "visit", derive(Mut, Box))]
+            #[blanket(default = "visit")]
+            #[blanket(derive(Mut, Box))]
             pub trait $visit<'ast> {
                 /// Visit the annotations of an [`AnnotatedAxiom`].
                 fn visit_annotations(&mut self, annotations: &'ast BTreeSet<Annotation>);
@@ -24,7 +25,8 @@ macro_rules! impl_traits {
                 )*
             }
 
-            #[blanket(default = "visit_mut", derive(Mut, Box))]
+            #[blanket(default = "visit_mut")]
+            #[blanket(derive(Mut, Box))]
             /// A trait for visiting the elements of an ontology mutably.
             pub trait [<$visit Mut>] {
                 /// Visit the annotations of an [`AnnotatedAxiom`].

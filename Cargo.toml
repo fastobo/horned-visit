@@ -12,5 +12,5 @@ categories = ["science"]
 
 [dependencies]
 horned-owl = "0.11.0"
-blanket = "0.2.0"
+blanket = "0.3.0"
 paste = "1.0.6"
